@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>שירות לקוחות – ישראייר</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__title">שירות לקוחות – ישראייר</div>
+  </header>
+
+  <main class="chat-wrap">
+    <div id="messages" class="messages"></div>
+    <form id="composer" class="composer" autocomplete="off">
+      <input id="input" type="text" placeholder="כתוב הודעה..." aria-label="כתיבת הודעה" required>
+      <button id="send" type="submit">שלח</button>
+    </form>
+  </main>
+
+  <script>
+    window.N8N_CHAT_URL = "https://chaya009.app.n8n.cloud/webhook/33f9c961-3820-47f5-baa6-f791d27b6fad/chat";
+    window.CHAT_SESSION_ID = null;
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

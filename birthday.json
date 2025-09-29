@@ -1,0 +1,354 @@
+{
+  "name": "birthday",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "birthday card generator",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Birthday name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Sender name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Gender",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Men"
+                  },
+                  {
+                    "option": "Female"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Favorite subjects",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Birthday's email",
+              "fieldType": "email",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        -16
+      ],
+      "id": "077ba0c6-6733-4441-b9c6-de986a1fda64",
+      "name": "On form submission",
+      "webhookId": "49b2919c-03fb-4c3f-8eee-46632f3e3e49"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appr3OPb9muQ1acnP",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://airtable.com/appr3OPb9muQ1acnP"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPzXpt2YfwVbyrj",
+          "mode": "list",
+          "cachedResultName": "card",
+          "cachedResultUrl": "https://airtable.com/appr3OPb9muQ1acnP/tblPzXpt2YfwVbyrj"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Burthday_name": "={{ $json[\"Birthday name\"] }}",
+            "Sander_name": "={{ $json[\"Sender name\"] }}",
+            "Gender": "={{ $json.Gender }}",
+            "Fav_subject": "={{ $json[\"Favorite subjects\"] }}",
+            "Email": "={{ $json[\"Birthday's email\"] }}",
+            "AI_card": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Burthday_name",
+              "displayName": "Burthday_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Sander_name",
+              "displayName": "Sander_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fav_subject",
+              "displayName": "Fav_subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "AI_card",
+              "displayName": "AI_card",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        -32
+      ],
+      "id": "8a09dbfb-c8bf-4151-82eb-3f6b7aeec422",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "M11nVO0m7SEkuzJg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=אתה סוכן של ברכות יום הולדת. \nכתוב ברכה עבור {{$json[\"Birthday name\"]}} \n{{ $json[\"Gender\"] === \"Men\" ? \"בלשון זכר\" : \"בלשון נקבה\" }} \nבהתבסס על הנושאים האהובים: {{$json[\"Favorite subjects\"]}}. \nהברכה תהיה בעברית.\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=אתה סוכן של כתיבת ברכה ליומולדת, תכתוב את הברכה לפי הנושאים האהובים שקיבלת\nברכה בעברית \nתכתוב ישר את הברכה"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "02b039f7-0848-46a1-bbd7-378471f5997e",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        176
+      ],
+      "id": "3c6ce8c8-7197-4d47-80d0-4a257b627ece",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "D6J2XKT55UXluDFc",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        272,
+        -176
+      ],
+      "id": "ab53cb6e-c1f0-4805-8dd6-049bfcd3bbf9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "subject": "New birthday card for you",
+        "textContent": "=Send from: {{ $json.fields.Sander_name }}\nThe card:  {{ $json.fields.AI_card }}",
+        "sender": "chaya0079@gmail.com",
+        "receipients": "chaya0079@gmail.com",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -192
+      ],
+      "id": "acaf0e90-d46b-4a7c-ad40-556c06629e20",
+      "name": "Send a transactional email",
+      "credentials": {
+        "sendInBlueApi": {
+          "id": "66cww7Y6VBTZmqer",
+          "name": "Brevo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Success",
+        "completionMessage": "=Your card is ready,\nthe card is:\n {{ $('Create a record').item.json.fields.AI_card }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        649.375,
+        -192
+      ],
+      "id": "fbcc62e0-5cfe-4566-bb90-8dbfcffc57d3",
+      "name": "Form",
+      "webhookId": "8bacfcc4-487e-4b34-82a2-ad78d9ea0689"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Send a transactional email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a transactional email": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "009f5542-775d-4269-8d8d-432a258477dd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0fb80894015c5adf34413885585e0bf416453e7ae3c4a9d6d5ef577a411c55a0"
+  },
+  "id": "VvM3yjU6W7GvxzMW",
+  "tags": []
+}

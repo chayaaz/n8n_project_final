@@ -1,0 +1,147 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "responseMode": "lastNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6b51da37-f7c1-4281-85fe-8f85dd8ac181",
+      "name": "When chat message received",
+      "webhookId": "33f9c961-3820-47f5-baa6-f791d27b6fad"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# ROLE:\nאתה סוכן של חברת ישראייר משירות לקוחות של ביטול ושינוי הזמנות\n\n# TASK:\nלענות על שאלות למשתמשים לגבי דמי ביטול ושינוי הזמנה אם מגיע להם ומה התנאים\nתענה תמיד בעברית ובלשון זכר\n\n# DETAILS:\nיש לך TOOLS שונים שתוכל לעבוד מולם ולקבל מהם מידע על מנת שתוכל לענות על השאלות של משתמש\n\n** ISRAIR_Tool **\nתשתמש בכלי הזה כדי לקבל את המידע לגבי תנאים לשינוי וביטול הזמנה ללקוחות ואם מגיע להם שובר או החזר כלשהו אם בכלל\nאתה מחוייב לענות רק על שאלות שקשורות להחזרים של ישראייר בלבד\nותמיד תענה בלשון רבים בזכר"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ff6f32dd-9050-4395-8418-a99faeea99cb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        208
+      ],
+      "id": "a32d047d-db1a-458f-af25-9556487af0ef",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FZC33klGNVvkMUXX",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "b139f2c8-d4dc-417b-8d6d-f5df45b5529c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/chayaaz/n8n_upload/refs/heads/main/israir.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "aa86629b-298b-4b92-a897-54b82b8472b5",
+      "name": "ISRAIR_Tool"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ISRAIR_Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4ce60061-8300-4507-8168-62c14740b52a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0fb80894015c5adf34413885585e0bf416453e7ae3c4a9d6d5ef577a411c55a0"
+  },
+  "id": "5MhPJPuHWzfAmIDF",
+  "tags": []
+}
